@@ -32,7 +32,7 @@ namespace Shong.Engine
             }
         }
 
-        void LogMsg(LogType type, string logMsg)
+        public void LogMsg(LogType type, string logMsg)
         {
             if (FilePath != null)
             {
@@ -50,7 +50,7 @@ namespace Shong.Engine
             if (ConsoleOut) LogCon(type, logMsg);
         }
 
-        void LogCon(LogType type, string logMsg)
+        public void LogCon(LogType type, string logMsg)
         {
             Console.WriteLine("{0}\t{1}\t{2}", 
                 type,
