@@ -1,28 +1,19 @@
-﻿using OpenTK;
+﻿using System.Collections.Generic;
 
 namespace Shong.Engine.Input
 {
     class InputHandler
     {
-        private GameWindow _win = null;
-        private InputSettings _settings;
+        private Dictionary<Tuple<Key, KeyAction>, delegate>  _keyCallbacks;
 
-        public InputHandler(GameWindow win, InputSettings inputSettings)
+        public InputHandler()
         {
-            if (win != null && inputSettings != null)
-            {
-                _win = win;
-                _settings = inputSettings;
+            _keyCallbacks = new Dictionary<Tuple<Key, KeyAction>, delegate>();
+        }
 
-                // Set Input Delegates
-                _win.KeyDown += KeyDown;
-                _win.KeyUp   += KeyUp;
-            }
-            else
-            {
-                Log.Instance.LogMsg(LogType.Error,
-                                    "Bad window or settings passed for input init.");
-            }
+        public void Register(Key key, KeyAction action, delegate del)
+        {
+            _keyCallbacks.Add(new Tuple<Key, KeyAction>(key, action), del);
         }
 
         public void Handle()
@@ -44,6 +35,8 @@ namespace Shong.Engine.Input
 
         private void HandleKeyEvent(InputKeyboard keyboard)
         {
+            var func = _keyCallbacks.Item(new Tuple<Key, KeyAction>(keyboard.Key, keyboard.Action));
+            if(func != null) func();
         }
 
         public void KeyUp(object sender, EventArgs e)
@@ -56,7 +49,7 @@ namespace Shong.Engine.Input
             KeyAdd(e.Key, KeyAction.Press);
         }
 
-        public void KeyAdd(Key key, KeyAction action)
+        private void KeyAdd(Key key, KeyAction action)
         {
             var newEv = new InputEvent(new InputKeyboard(key, action));
             InputEventQueue.Instance.Enqueue(newEv);

@@ -4,8 +4,10 @@ namespace Shong.Engine
 {
     class Game
     {
-        private GameWindow _mainWindow;
-        private Settings _settings;
+        private GameWindow   _mainWindow;
+        private Settings     _settings;
+        private InputHandler _input;
+
         private bool _gameRun = true;
 
         public Game()
@@ -22,10 +24,13 @@ namespace Shong.Engine
 
             // Initialize Graphics
 
+            // Initialize Input
+            // TODO: BUILD DICTIONARY
+            _input = new InputHandler();
+
             // Main Loop
             while (_gameRun)
             {
-                
             }
 
             // Clean Up
