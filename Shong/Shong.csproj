@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Engine\Events.cs" />
     <Compile Include="Engine\Game.cs" />
+    <Compile Include="Engine\Input\InputEvent.cs" />
     <Compile Include="Engine\Input\InputHandler.cs" />
     <Compile Include="Engine\Input\InputSettings.cs" />
     <Compile Include="Engine\Log.cs" />

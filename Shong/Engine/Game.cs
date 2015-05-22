@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using Shong.Engine.Input;
 
 namespace Shong.Engine
 {

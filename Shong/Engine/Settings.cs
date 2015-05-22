@@ -45,7 +45,7 @@ namespace Shong.Engine
             // We can only load if FilePath is set
             if (FilePath != null && File.Exists(FilePath))
             {
-                var tempSetting = JsonConvert.DeserializeObject<Settings>(FilePath);
+                var tempSetting = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(FilePath));
 
                 Input = tempSetting.Input;
                 Video = tempSetting.Video;
@@ -63,7 +63,7 @@ namespace Shong.Engine
             // We can only save if FilePath is set
             if (FilePath != null)
             {
-                File.WriteAllText(FilePath, JsonConvert.SerializeObject(this));
+                File.WriteAllText(FilePath, JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings()));
             }
             else
             {

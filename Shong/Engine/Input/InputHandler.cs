@@ -1,28 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using OpenTK.Input;
 
 namespace Shong.Engine.Input
 {
     class InputHandler
     {
-        private Dictionary<Tuple<Key, KeyAction>, delegate>  _keyCallbacks;
+        private Dictionary<Tuple<Key, KeyAction>, Action> _keyCallbacks;
 
         public InputHandler()
         {
-            _keyCallbacks = new Dictionary<Tuple<Key, KeyAction>, delegate>();
+            _keyCallbacks = new Dictionary<Tuple<Key, KeyAction>, Action>();
         }
 
-        public void Register(Key key, KeyAction action, delegate del)
+        public void Register(Key key, KeyAction action, Action func)
         {
-            _keyCallbacks.Add(new Tuple<Key, KeyAction>(key, action), del);
+            _keyCallbacks.Add(new Tuple<Key, KeyAction>(key, action), func);
         }
 
         public void Handle()
         {
             // Handle all events in queue
             // TODO: Add timeout for this!!
-            while(!InputEventQueue.Instance.queue.Count.Equals(0))
+            while(!InputEventQueue.Instance.Count.Equals(0))
             {
-                var ev = InputEventQueue.Instance.Dequeue();
+                var ev = InputEventQueue.Instance.Dequeue;
 
                 if(ev.Keyboard != null) HandleKeyEvent(ev.Keyboard);
                 if(ev.Mouse != null)    HandleMouseEvent(ev.Mouse);
@@ -35,16 +37,16 @@ namespace Shong.Engine.Input
 
         private void HandleKeyEvent(InputKeyboard keyboard)
         {
-            var func = _keyCallbacks.Item(new Tuple<Key, KeyAction>(keyboard.Key, keyboard.Action));
+            Action func = _keyCallbacks[new Tuple<Key, KeyAction>(keyboard.Key, keyboard.Action)];
             if(func != null) func();
         }
 
-        public void KeyUp(object sender, EventArgs e)
+        public void KeyUp(object sender, KeyboardKeyEventArgs e)
         {
             KeyAdd(e.Key, KeyAction.Release);
         }
 
-        public void KeyDown(object sender, EventArgs e)
+        public void KeyDown(object sender, KeyboardKeyEventArgs e)
         {
             KeyAdd(e.Key, KeyAction.Press);
         }

@@ -1,4 +1,6 @@
-﻿namespace Shong.Engine
+﻿using System.Collections.Generic;
+
+namespace Shong.Engine
 {
     class EventQueue
     {

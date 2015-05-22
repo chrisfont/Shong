@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using OpenTK;
 using OpenTK.Input;
 
 namespace Shong.Engine.Input
@@ -21,7 +23,7 @@ namespace Shong.Engine.Input
 
         private Queue<InputEvent> _queue = null;
 
-        EventQueue()
+        InputEventQueue()
         {
             _queue = new Queue<InputEvent>();
         }
@@ -31,14 +33,19 @@ namespace Shong.Engine.Input
             {
                 lock(PadLock)
                 {
-                    return _instance ?? (_instance = new EventQueue());
+                    return _instance ?? (_instance = new InputEventQueue());
                 }
             }
         }
 
-        public InputEvent Dequeue()
+        public int Count
         {
-            _queue.Dequeue();
+            get { return _queue.Count; } 
+        }
+
+        public InputEvent Dequeue
+        {
+            get { return _queue.Dequeue(); }
         }
 
         public void Enqueue(InputEvent ev)
