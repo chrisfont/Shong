@@ -18,6 +18,11 @@ namespace Shong.Engine.Input
             _keyCallbacks.Add(new Tuple<Key, KeyAction>(key, action), func);
         }
 
+        public void Deregister(Key key, KeyAction action)
+        {
+            _keyCallbacks[new Tuple<Key, KeyAction>(key, action)] = null;
+        }
+
         public void Handle()
         {
             // Handle all events in queue
@@ -37,7 +42,7 @@ namespace Shong.Engine.Input
 
         private void HandleKeyEvent(InputKeyboard keyboard)
         {
-            Action func = _keyCallbacks[new Tuple<Key, KeyAction>(keyboard.Key, keyboard.Action)];
+            var func = _keyCallbacks[new Tuple<Key, KeyAction>(keyboard.Key, keyboard.Action)];
             if(func != null) func();
         }
 
