@@ -6,7 +6,7 @@ namespace Shong.Engine.Input
 {
     class InputHandler
     {
-        private Dictionary<Tuple<Key, KeyAction>, Action> _keyCallbacks;
+        private readonly Dictionary<Tuple<Key, KeyAction>, Action> _keyCallbacks;
 
         public InputHandler()
         {
